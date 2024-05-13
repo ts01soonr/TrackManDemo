@@ -30,26 +30,27 @@ jobs:
 
     - name: Download JAR
       run: wget https://us.workplace.datto.com/filelink/6813-79cc5be9-b5c9d2ad2e-2 -O soonr.jar --no-verbose &
-    - name: Download APK
-      run: wget https://us.workplace.datto.com/filelink/6813-7a1f89c4-6b6001872b-2 -O TrackMan.apk --no-verbose &
     
     - name: Install Appium
       run: |
           npm install -g appium@1.22
           appium -v
           appium &
+    - name: Update-hearbeat-value
+      run: java -cp soonr.jar jtcom.lib.srv.ConnectionHandler heartbeat=10
+              
     - name: Invoke-hearbeat-task
       run: java -cp soonr.jar jtcom.lib.srv.ConnectionHandler hb play 17
       
     - name: Run TrackMan Demo
-      uses: reactivecircus/android-emulator-runner@v2 # install and create the Emulator
+      uses: reactivecircus/android-emulator-runner@v1 # install and create the Emulator
       with:
         api-level: 30
         target: default
         arch: x86_64
         #headless: false
         profile: Nexus 6
-        script: sh start_demo.sh
+        script: java -jar soonr.jar 2>1 | tee log/demo.log
 
     - name: Upload Screenshot&Logs
       run: sh upload.sh
