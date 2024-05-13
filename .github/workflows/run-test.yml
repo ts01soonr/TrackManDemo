@@ -30,7 +30,10 @@ jobs:
 
     - name: Download JAR
       run: wget https://us.workplace.datto.com/filelink/6813-79cc5be9-b5c9d2ad2e-2 -O soonr.jar --no-verbose &
-    
+
+    - name: Download APK
+      run: wget https://us.workplace.datto.com/filelink/6813-7a1f89c4-6b6001872b-2 -O TrackMan.apk --no-verbose &
+      
     - name: Install Appium
       run: |
           npm install -g appium@1.22
@@ -49,7 +52,7 @@ jobs:
         target: default
         arch: x86_64
         profile: Nexus 6
-        script: java -jar soonr.jar
+        script: sh start_demo.sh
 
     - name: Upload Screenshot&Logs
       run: sh upload.sh
