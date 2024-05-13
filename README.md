@@ -43,15 +43,6 @@ bye
 ```
 
 
-## Running Tests
-
-To run tests, run the following command
-
-```bash
-  npm run test
-```
-
-
 ## System Environment
 
 To run this project, you will need to add the following environment to your System
@@ -62,7 +53,13 @@ To run this project, you will need to add the following environment to your Syst
 
 `Android Emulator[Nexus 6, API-level 30]`
 
+## run via GitHub Action
 
+Triggger CI/CD pipeline via following workflows
+
+```bash
+  https://github.com/ts01soonr/TrackManDemo/blob/main/.github/workflows/run-test.yml
+```
 
 ## Run Locally
 
@@ -113,11 +110,36 @@ Initial TrackMan API inside telnet session
 ```bash
   run jtcom.Dev.TestTrackManDemo
 ```
-## run via GitHub Action
 
-Triggger CI/CD pipeline via following workflows
+## FAQ
 
-```bash
-  https://github.com/ts01soonr/TrackManDemo/blob/main/.github/workflows/run-test.yml
-```
+#### 1. How to exit telnet session?
 
+Answer: type 'bye' or 'quit' and press Enter 
+
+#### 2. How to stop the server
+
+Answer: type 'stop' and press Enter
+
+#### 3. Can we parse multi command?
+
+Answer: You can copy multiple lines of commands and parse them into the telnet session.
+
+#### 4. Can we run scripts?
+
+Answer: For running scripts, it might be clearer to specify the command to run the script. For example, "To run scripts, create a text file (e.g., 'tests.txt') containing multiple steps, then use the command 'run tests.txt'."
+
+#### 5. Source files for TestTrackManDemo?
+Answer: https://github.com/ts01soonr/TrackManDemo/blob/main/src/jtcom/Dev/TestTrackManDemo.java and jtcom/Dev/lib are helper class for running appium as services
+
+#### 6. Can this tool be used for any product?
+
+Answer: Yes, when the server is running, it can perform just like Appium Inspector for both manually testing and automation task. 
+
+#### 7. what is the usage of https://demo.italle.dk?
+
+Answer: This is actually the control system used for managing Github-hosted VMs during execution. [ This is In-house tool just like testclient]
+
+## Feedback
+
+If you have any feedback, please reach out to us at fang@italle.dk
