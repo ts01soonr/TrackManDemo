@@ -93,12 +93,12 @@ Check the server via telnet after server is started
 ```bash
   telnet localhost 9999
 ```
-Setup AppiumDriver inside telnet session
+Setup AppiumDriver via telnet session
 
 ```bash
   aos2 settings
 ```
-Initial TrackMan API inside telnet session
+Initialize TrackMan APP via telnet session
 
 ```bash
   aos2 init
