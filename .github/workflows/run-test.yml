@@ -50,3 +50,6 @@ jobs:
         #headless: false
         profile: Nexus 6
         script: java -jar soonr.jar
+
+    - name: Upload Screenshot&Logs
+      run: java -cp soonr.jar jtcom.lib.srv.ConnectionHandler up ./log TrackMan/%NOW%

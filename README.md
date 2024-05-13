@@ -115,9 +115,9 @@ Initial TrackMan API inside telnet session
 ```
 ## run via GitHub Action
 
-To deploy this project run
+Triggger CI/CD pipeline via following workflows
 
 ```bash
-  npm run deploy
+  https://github.com/ts01soonr/TrackManDemo/blob/main/.github/workflows/run-test.yml
 ```
 
