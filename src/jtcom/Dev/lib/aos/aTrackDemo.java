@@ -4,7 +4,7 @@ package jtcom.Dev.lib.aos;
 import jtcom.lib.Datainfo;
 import jtcom.lib.Job;
 import jtcom.lib.Sys;
-import jtcom.lib.aOS;
+import jtcom.Dev.lib.aOStm;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -12,11 +12,11 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 public class aTrackDemo extends aBase {
     private final static Logger log = Sys.getLogger("[aTrackDemo]");
     public String projects = "";
-    public String[] OS = Datainfo.aOS.split(":");
+    public String[] OS = Datainfo.aOS2.split(":");
     private String sid = "";
 
     public aTrackDemo() { // default with reset
-        if (driver == null) driver = aOS.getDriver();
+        if (driver == null) driver = aOStm.getDriver();
         if (driver != null) return;
         if (loadSession()) return;
         driver = newdriver(false);
@@ -39,7 +39,7 @@ public class aTrackDemo extends aBase {
     private synchronized boolean loadSession() {
         OS = load();
         IP = OS[0];
-        if (!Datainfo.aOS.equals(":")) if (Job.te == 0) return false; //Multi exectuion
+        if (!Datainfo.aOS2.equals(":")) if (Job.te == 0) return false; //Multi exectuion
         sid = RemoteExec("sid");
         if (sid.equals("null")) return false;
         driver = newRemotedriver(sid);
@@ -60,7 +60,18 @@ public class aTrackDemo extends aBase {
         log.info("I am TrackMan");
         log.info(getContent());
     }
-
+    public String getSinglePoint(int nr){
+        String shotPoint="#shotViewNumberViewNumberText";
+        if(nr==0) nr=account(shotPoint);
+        WE=find(shotPoint,nr-1);
+        if(WE==null) return "0";
+        return WE.getText();
+    }
+    public String hitShot(){
+        String hitShotButton="#hitShotButton";
+        if(has(hitShotButton)) WE.click();
+        return WE==null?"FAIL":"";
+    }
     public int playDemo() {
         int total = 0;
         for (int i = 1; i < 4; i++) {
@@ -73,6 +84,7 @@ public class aTrackDemo extends aBase {
     public int playAround() {
         if (has("#btnPlayAgain")) WE.click();
         int total = 0;
+        String[] points = {"","","",""};
         for (int i = 1; i < 4; i++) {
             log.info("@RULES=" + wait4("@RULES"));
             if (WE == null) break;
@@ -81,13 +93,17 @@ public class aTrackDemo extends aBase {
             Sys.sleep("click [hitShotButton]", 2);
             //log.info("@CARRY="+wait4("@CARRY"));
             log.info("wait-for [Points]");
-            wait4("#tvPoints");
-            String point = WE.getText();
-            total += Integer.parseInt(point);
+            if(wait4("#tvPoints"))
+                points[i] = WE.getText();
+            else
+                points[i]= getSinglePoint(i);
+            total +=Integer.parseInt(points[i]);;
             wait4disappear("#tvPoints");
             //tvPoints
-            Sys.sleep(i + ".point=" + point, 4);
+            Sys.sleep(i + ".point=" + points[i], 4);
         }
+        points[0]=(Integer.parseInt(points[1])+Integer.parseInt(points[2])+Integer.parseInt(points[3]))+"";
+        log.info("points[]="+Sys.arrayToString(points,":"));
         log.info("this_round_points=" + total);
         return total;
     }
@@ -177,42 +193,48 @@ public class aTrackDemo extends aBase {
             String p37 = command.substring((cmd + " " + p2).trim().length()).trim();
             if (cmd.isEmpty()) {
                 gotoMain();
-                return "OK";
+                return "";
             } else if (cmd.equals("start")) {
                 startDemo();
                 Sys.sleep("loading", 5);
-                return wait4("@RULES") ? "OK" : "FAIL";
+                return wait4("@RULES") ? "" : "FAIL";
             } else if (cmd.equals("play")) {
                 int points = playDemo();
-                return points + (wait4("#btnPlayAgain") ? " OK" : " FAIL");
+                return points + (wait4("#btnPlayAgain") ? "" : " FAIL");
             } else if (cmd.equals("exit")) {
                 exitDemo();
-                return "OK";
+                return "";
+            } else if (cmd.equals("hit")) {
+                return hitShot();
+            } else if (cmd.equals("point")) {
+                //if(p2.isEmpty()) return "[1,2.3] FAIL";
+                if(p2.isEmpty()) p2="0";
+                return getSinglePoint(Integer.parseInt(p2))+"";
             } else if (cmd.equals("result")) {
                 String result = getResult();
                 if (p2.equals("x")) closeResult();
-                return result + " OK";
-            } else if (cmd.equals("again")) {
+                return result + "";
+            } else if (cmd.equals("again")|| cmd.equals("playagain")) {
                 int points = playAgain();
-                return points + " OK";
+                return points + "";
             } else if (cmd.equals("around") || cmd.equals("playaround")) {
-                return playAround() + " OK";
+                return playAround() +"";
             } else if (cmd.equals("close")) {
                 //close result
                 closeResult();
-                return "OK";
+                return "";
             } else if (cmd.equals("quit")) {
                 //quit game
                 quitGame();
-                return "OK";
+                return "";
             } else if (cmd.equals("help")) {
-                return "start|exit|result|again|around|close|quit";
+                return "start|exit|result|again|around|close|quit|hit|point";
             }
 
         } catch (Exception e) {
-
+            log.error(e.getMessage());
         }
-        return "unknown_cmd FAIL";
+        return "[start|exit|result|again|around|close|quit|hit|point] FAIL";
     }
 
 	public static void main(String[] args) {

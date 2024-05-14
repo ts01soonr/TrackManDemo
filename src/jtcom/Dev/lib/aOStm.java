@@ -83,7 +83,8 @@ public class aOStm {
 
     public static void init() {
         if (app == null) init(false);
-        if (app == null) init(true);
+        else
+        if(!app.hasContent()) init(false);
         app.skipWelcome();
         app.continueAsGuest();
     }
@@ -116,18 +117,16 @@ public class aOStm {
     }
 
     public static String ping() {
-        if(tc != 0)
-            try {
-                log.info("ping to appium server");
-                JavascriptExecutor js = driver;
-                js.executeScript("mobile: deviceInfo");
-            } catch (Exception e) {
-                log.info("recreate session after unexpected timeout");
-                driver.quit();
-                driver=null;
-                init();
 
-            }
+        try {
+            log.info("ping to appium server");
+            JavascriptExecutor js = driver;
+            js.executeScript("mobile: deviceInfo");
+        } catch (Exception e) {
+            log.info("recreate session after unexpected timeout");
+            init();
+
+        }
         return "";
     }
 
@@ -354,7 +353,7 @@ public class aOStm {
             app.continueAsGuest();
             return app.has("#quickLoginButton") + "";
         } else if (cmd.equals("demo")) {
-            if (app == null) return "null";
+            init();
             return new aTrackDemo(driver).exec(p27);
         }
         return "aos2 help [..] FAIL";

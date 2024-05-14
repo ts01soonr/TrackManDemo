@@ -57,7 +57,7 @@ public class aHelp {
         txt += "  #ID  -> dk.TrackMan.Range:id\r\n";
         txt += "  $ID  -> android:id\r\n";
         txt += "  @TXT -> //android.widget.TextView[@Text=.]\r\n";
-        txt += "  !TXT -> //LinearLayout[@content-desc=.]\r\n";
+        txt += "  !TXT -> //android.widget.LinearLayout[@content-desc=.]\r\n";
         txt += "  //XP -> By.xpath[XP]";
         return txt;
     }
@@ -159,9 +159,11 @@ public class aHelp {
                 txt = "[start|exit|result|again|around|close|quit]\r\n";
                 txt += "  //fx aos2 demo start  -start demo session \r\n";
                 txt += "  //fx aos2 demo play   -play 3 rounds\r\n";
-                txt += "  //fx aos2 demo again  -play again\r\n";
-                txt += "  //fx aos2 demo around -play a round\r\n";
-                txt += "  //fx aos2 demo result -check Final results\r\n";
+                txt += "  //fx aos2 demo point [1|2|3] -get single point\r\n";
+                txt += "  //fx aos2 demo hit  -hit #hitShotButton\r\n";
+                txt += "  //fx aos2 demo playagain  -play again\r\n";
+                txt += "  //fx aos2 demo playaround -play a round\r\n";
+                txt += "  //fx aos2 demo result [x] -check Final Result\r\n";
                 txt += "  //fx aos2 demo close  -Close results screen\r\n";
                 txt += "  //fx aos2 demo result -view results and close\r\n";
                 txt += "  //fx aos2 demo exit   -exit Demo";
@@ -175,7 +177,6 @@ public class aHelp {
     }
 
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
         //Help.print(Command.bye);
         System.out.println(aHelp.print("demo"));
         System.out.println(aHelp.search("*k"));

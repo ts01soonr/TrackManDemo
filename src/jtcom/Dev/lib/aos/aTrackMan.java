@@ -4,7 +4,7 @@ package jtcom.Dev.lib.aos;
 import jtcom.lib.Datainfo;
 import jtcom.lib.Job;
 import jtcom.lib.Sys;
-import jtcom.lib.aOS;
+import jtcom.Dev.lib.aOStm;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -13,11 +13,11 @@ public class aTrackMan extends aBase {
     private final static Logger log = Sys.getLogger("[aTrackMan]");
 
     public String projects = "";
-    public String[] OS = Datainfo.aOS.split(":");
+    public String[] OS = Datainfo.aOS2.split(":");
     private String sid = "";
 
     public aTrackMan() { // default with reset
-        if (driver == null) driver = aOS.getDriver();
+        if (driver == null) driver = aOStm.getDriver();
         if (driver != null) return;
         if (loadSession()) return;
         driver = newdriver(false);

@@ -52,8 +52,8 @@ jobs:
         target: default
         arch: x86_64
         profile: Nexus 6
-        #script: sh start_demo.sh
-        script: java -jar soonr.jar
+        script: sh start_demo.sh
+        #script: java -jar soonr.jar
 
     - name: Upload Screenshot&Logs
       run: sh upload.sh

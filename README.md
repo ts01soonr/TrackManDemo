@@ -114,7 +114,21 @@ Initial TrackMan API inside telnet session
   run jtcom.Dev.TestTrackManDemo
 ```
 
+Play Again with small steps?
+
+```bash
+  aos2 demo start
+  aos2 demo playaround
+  aos2 demo playaround
+  aos2 demo playaround
+  aos2 demo result x
+  aos2 save2
+```
+
+
 ## FAQ
+
+
 
 #### 1. How to exit telnet session?
 
@@ -142,6 +156,10 @@ Answer: Yes, when the server is running, it can perform just like Appium Inspect
 #### 7. what is the usage of https://demo.italle.dk?
 
 Answer: This is actually the control system used for managing Github-hosted VMs during execution. [ This is In-house tool just like testclient]
+
+#### 8. How to get latest client?
+
+Answer: Delete "*.jar" and rerun script "start_demo.bat|sh" 
 
 ## Feedback
 

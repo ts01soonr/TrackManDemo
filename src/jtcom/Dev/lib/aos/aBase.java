@@ -240,8 +240,15 @@ public abstract class aBase {
     }
 
     public WebElement find(String txt, int index) {
-        return driver.findElements(getBy(txt)).get(index);
+        try{
+            return driver.findElements(getBy(txt)).get(index);
+        }catch (Exception e)
+        {
+            log.info("No-Element-here");
+        }
+        return null;
     }
+
 
     public int account(String txt) {
         List<WebElement> list = driver.findElements(getBy(txt));
@@ -385,7 +392,14 @@ public abstract class aBase {
             }
         }
     }
-
+    public boolean hasContent(){
+        try {
+            driver.findElement(getBy("$content"));
+            return true;
+        } catch (Throwable t) {
+            return false;
+        }
+    }
     public boolean has(String txt) {
         //simple-check
         try {
