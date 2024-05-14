@@ -50,7 +50,7 @@ public class aTrackDemo extends aBase {
     }
 
     public void gotoMain() {
-        if (has("@Skip")) WE.click();
+        skipWelcome();
         continueAsGuest();
         //exitDemo if it has previously Demo session
         exitDemo();
@@ -76,7 +76,7 @@ public class aTrackDemo extends aBase {
         for (int i = 1; i < 4; i++) {
             log.info("@RULES=" + wait4("@RULES"));
             if (WE == null) break;
-            Sys.sleep(1);
+            Sys.sleep(3);
             click("#hitShotButton");
             Sys.sleep("click [hitShotButton]", 2);
             //log.info("@CARRY="+wait4("@CARRY"));
@@ -86,7 +86,7 @@ public class aTrackDemo extends aBase {
             total += Integer.parseInt(point);
             wait4disappear("#tvPoints");
             //tvPoints
-            Sys.sleep(i + ".point=" + point, 3);
+            Sys.sleep(i + ".point=" + point, 4);
         }
         log.info("this_round_points=" + total);
         return total;
@@ -132,8 +132,10 @@ public class aTrackDemo extends aBase {
 
     public void startDemo() {
         if (has("@RULES")) return;
+        if(has("!Range")) gotoMain();
+        if(!wait4("!Range")) return;
         log.info("click [RANGE]");
-        click("!Range");
+        WE.click();
         for (int i = 0; i < 4; i++) {
             if (has("#rangeDemoView")) break;
             log.info("scrollDown to [Demo]");
@@ -143,21 +145,21 @@ public class aTrackDemo extends aBase {
         log.info("click [TRY-THE-DEMO]");
         WE.click();
         log.info("wait&click [START-DEMO]");
-        W4C("#demoInfoStartDemoButton");
+        if(!W4C("#demoInfoStartDemoButton")) return;
         log.info("wait&click [BULLSEYE]");
-        W4C("#bullCardView");
+        if(!W4C("#bullCardView")) return;
         log.info("wait&click [BAY]");
-        W4C("#bayTypeSelectionBayText");
+        if(!W4C("#bayTypeSelectionBayText")) return;
         log.info("wait&click [1]");
-        W4C("@1");
+        if(!W4C("@1")) return;
         String name = "#etPlayerName";
         log.info("wait&input_player [Mr.Fang]");
-        wait4(name);
+        if(!wait4(name))    return;
         send(name, "Mr.Fang");
         log.info("wait&click [START GAME]");
-        W4C("#btnStartGame");
+        if(!W4C("#btnStartGame")) return;
         log.info("wait&click [CONTINUE]");
-        W4C("#gameHowToPlayContinue");
+        if(!W4C("#gameHowToPlayContinue")) return;
     }
 
     public String exec(String command) {

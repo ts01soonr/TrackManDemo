@@ -2,10 +2,7 @@ package jtcom.Dev.lib;
 
 import io.appium.java_client.AndroidKeyCode;
 import io.appium.java_client.AppiumDriver;
-import jtcom.Dev.lib.aos.aBase;
-import jtcom.Dev.lib.aos.aSettings;
-import jtcom.Dev.lib.aos.aTrackDemo;
-import jtcom.Dev.lib.aos.aTrackMan;
+import jtcom.Dev.lib.aos.*;
 import jtcom.lib.Datainfo;
 import jtcom.lib.Sys;
 import jtcom.lib.Web;
@@ -71,9 +68,14 @@ public class aOStm {
         int n = reset ? 60 : 30;
         app = new aTrackMan(driver);
         if (reset) {
-            Sys.sleep("waiting for @Skip after full reset..", 30);
-            app.wait4("#skipTextView", n);
-            if (app.W4C("#skipTextView")) Sys.sleep(10);
+            String skipLink="#skipTextView";
+            Sys.sleep("waiting for @Skip after full reset..", 15);
+            if(!app.has(skipLink)) Sys.sleep("waiting for @Skip once more..", 15);
+            app.wait4(skipLink, n);
+            if (app.W4C(skipLink))
+                app.continueAsGuest();
+            else
+                Sys.sleep(10);
         }
         app.continueAsGuest();
         timeout = false;
@@ -114,17 +116,18 @@ public class aOStm {
     }
 
     public static String ping() {
+        if(tc != 0)
+            try {
+                log.info("ping to appium server");
+                JavascriptExecutor js = driver;
+                js.executeScript("mobile: deviceInfo");
+            } catch (Exception e) {
+                log.info("recreate session after unexpected timeout");
+                driver.quit();
+                driver=null;
+                init();
 
-        try {
-            log.info("ping to appium server");
-            JavascriptExecutor js = driver;
-            js.executeScript("mobile: deviceInfo");
-        } catch (Exception e) {
-            log.info("recreate session after unexpected timeout");
-            start();
-            init();
-
-        }
+            }
         return "";
     }
 
@@ -136,10 +139,15 @@ public class aOStm {
                 public void run() {
                     while (!timeout) {
                         tc++;
-                        Sys.delay(60000);
+                        log.info("appium[HB]:"+tc);
                         ping();
-                        Sys.delay(60000);
+                        for(int i=0;i<2*6;i++){
+                            //ping every 2 minutes
+                            Sys.delay(10*1000);
+                            if(timeout) break;
+                        }
                     }
+                    log.info("appium[HB]:exit");
                 }
             }).start();
         return "";
@@ -288,32 +296,26 @@ public class aOStm {
         String p6 = tokens.length > 5 ? tokens[5] : "";
         String p7 = tokens.length > 6 ? tokens[6] : "";
         String p27 = (p2 + " " + p3 + " " + p4 + " " + p5 + " " + p6 + " " + p7).trim();
-        if (cmd.isEmpty()) {
-            if (app == null) init();
-            return "trackman.golf=" + version();
-        } else if (cmd.equals("quit")) return quit();
+        if (cmd.isEmpty()||cmd.equals("help")) return aHelp.print(p2);
+        else if (cmd.equals("quit")) return quit();
         else if (cmd.equals("settings")) return aSettings.getBattery();
         else if (cmd.equals("stop") || cmd.equals("stopagent")) return app.Stop();
         else if (cmd.equals("start") || cmd.equals("startagent")) return app.Start();
         else if (cmd.equals("restart") || cmd.equals("rsagent")) return app.Restart();
         else if (cmd.equals("air")) return app.ADBAirplane(p2);
-        else if (cmd.equals("version")) return version();
+        else if (cmd.equals("version")) return "trackman.golf="+version();
         else if (cmd.equals("clean")) return clean();
         else if (cmd.equals("kill")) return kill();
         else if (cmd.equals("reload")) return reload();
-        else if (cmd.equals("init")) {
-            init(true);
-            return "";
-        } else if (cmd.equals("login")) return login(p2, p3);
+        else if (cmd.equals("init")) {init(true);return "";}
+        else if (cmd.equals("login")) return login(p2, p3);
         else if (cmd.equals("uninstall")) return uninstall();
         else if (cmd.equals("install")) return install();
         else if (cmd.equals("isinstall")) return isinstalled() + "";
         else if (cmd.equals("pwd") || cmd.equals("url")) return driver.currentActivity();
         else if (cmd.equals("reset")) return reset();
-        else if (cmd.equals("save2")) {
-            app.save2();
-            return "";
-        } else if (cmd.equals("back")) return back();
+        else if (cmd.equals("save2")) {app.save2();return "";}
+        else if (cmd.equals("back")) return back();
         else if (cmd.equals("up")) return up();
         else if (cmd.equals("down")) return down();
         else if (cmd.equals("left")) return left();
@@ -329,9 +331,8 @@ public class aOStm {
         else if (cmd.equals("w4d")) return app.wait4disappear(p27) + "";
         else if (cmd.equals("account")) return app.account(p27) + "";
         else if (cmd.equals("key")) return app.sendKey(Integer.valueOf(p2), p3.isEmpty() ? 1 : Integer.valueOf(p3));
-        else if (cmd.equals("pos")) {
-            return app.outputXY(p27);
-        } else if (cmd.equals("isv")) return app.isVisible(p27) ? "true" : "false";
+        else if (cmd.equals("pos")) return app.outputXY(p27);
+        else if (cmd.equals("isv")) return app.isVisible(p27) ? "true" : "false";
         else if (cmd.equals("send") || cmd.equals("fill")) {
             if (app.isVisible(p2)) app.send(p2, p3);
             return "";
@@ -339,23 +340,24 @@ public class aOStm {
             if (StringUtils.isNumeric(p2) && StringUtils.isNumeric(p3)) app.tapOnXY(p2, p3);
             else app.click(p27);
             return "";
-        } else if (cmd.equals("check")) {
-            if (app == null) return "null";
-            app = new aTrackMan(driver);
-            return session() + ":" + app.getContent() + ":" + tc;
         } else if (cmd.equals("view")) {
             init();
             if (p2.equals(".")) return "[...]";
             return view();
-
+        } else if (cmd.equals("check")) {
+            if (app == null) return "null";
+            app = new aTrackMan(driver);
+            return session() + ":" + app.getContent() + ":" + tc;
         } else if (cmd.equals("guest")) {
+            if (app == null) return "null";
             app = new aTrackMan(driver);
             app.continueAsGuest();
             return app.has("#quickLoginButton") + "";
         } else if (cmd.equals("demo")) {
+            if (app == null) return "null";
             return new aTrackDemo(driver).exec(p27);
         }
-        return "Unknown Command [stop|start|restart|update|version|clean|uninstall|install|reset] FAIL";
+        return "aos2 help [..] FAIL";
     }
 
 	public static void main(String[] args) {

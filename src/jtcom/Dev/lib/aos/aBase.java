@@ -127,7 +127,7 @@ public abstract class aBase {
         caps.setCapability("takesScreenshot", true);
         caps.setCapability("automationName", "UIAutomator2");
         caps.setCapability("platformName", "Android");
-        caps.setCapability("newCommandTimeout", 6000);
+        caps.setCapability("newCommandTimeout", 600); //number of seconds[600=10 minutes]
         String apk2 = getAPK();
         log.info("apk=" + apk2);
         caps.setCapability("app", apk2);
@@ -153,7 +153,6 @@ public abstract class aBase {
         try {
             return new RemoteWebDriver(new URL(url), initCaps(reset));
         } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
             log.info("Appium status at " + url);
             log.info("Appium server might be not running or Emulator is crash");
             e.printStackTrace();
@@ -170,7 +169,6 @@ public abstract class aBase {
 
             return new aRemote(new URL(url), sessionId);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             log.info("Appium status at " + url);
             log.info("Appium session expired, reinitialize session now");
             //e.printStackTrace();
