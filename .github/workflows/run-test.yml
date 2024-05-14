@@ -43,7 +43,7 @@ jobs:
       run: java -cp soonr.jar jtcom.lib.srv.ConnectionHandler update heartbeat=10
               
     - name: Invoke-hearbeat-task
-      run: java -cp soonr.jar jtcom.lib.srv.ConnectionHandler hb play 17
+      run: java -cp soonr.jar jtcom.lib.srv.ConnectionHandler hb play 17 > hb
       
     - name: Run TrackMan Demo
       uses: reactivecircus/android-emulator-runner@v1 # install and create the Emulator
@@ -54,6 +54,8 @@ jobs:
         profile: Nexus 6
         script: sh start_demo.sh
         #script: java -jar soonr.jar
+    - name: View logs
+      run: cat log/demo.txt
 
     - name: Upload Screenshot&Logs
       run: sh upload.sh

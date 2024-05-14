@@ -7,9 +7,9 @@ if [ ! -f ${S} ] ; then
 fi
 
 T=`date '+%Y-%m-%d_%H-%M-%S'`
-L="log/demo.log"
-BK="log/${T}.log"
-echo log/${T}demo.log
+L="log/demo.txt"
+BK="log/${T}.txt"
+echo log/${T}demo.txt
 if [ -f ${L} ] ; then
    mv ${L} ${BK}
 fi
