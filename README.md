@@ -1,6 +1,5 @@
 
-![Logo](https://demo.italle.dk/img/computers.png)
-
+![Logo](https://redbourngolfclub.co.uk/wp-content/uploads/2020/12/Web-Header1.jpg)
 
 # TrackMan Golf App (Android) Demo
 
