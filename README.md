@@ -19,31 +19,6 @@ Automate playing a Bullseye game in Demo mode as a guest player:
   c. validating the score while playing against the final results.
 ```
     
-## Video Demo
-
-Link to video recording [https://us.workplace.datto.com/filelink/680c-7a1f8f6e-8f48e45b8e-2 ]
-
-## Screenshots
-
-![App Screenshot](res/help.png)
-
-## Command & Examples
-
-```bash
-telnet localhost 9999
-aos2 settings
-aos2 init
-aos2 view
-aos2 save2
-aos2 demo start
-aos2 demo play
-aos2 has @Skip
-aos2 help
-aos2 help demo
-....
-bye
-
-```
 
 
 ## System Environment
@@ -55,6 +30,10 @@ To run this project, you will need to add the following environment to your Syst
 `APPIUM 1.X[v1.15 or v1.22]`
 
 `Android Emulator[Nexus 6, API-level 30]`
+
+`above config is mapping with aOS2 setting under account.properties [aOS2=127.0.0.1:4723:Nexus6:11:TrackMan.apk]`
+
+
 
 ## Run via GitHub Action
 
@@ -160,6 +139,33 @@ Answer: This is actually the control system used for managing Github-hosted VMs 
 #### 8. How to get latest client?
 
 Answer: Delete "*.jar" and rerun script "start_demo.bat|sh" 
+
+## Video Demo
+
+Link to video recording [https://us.workplace.datto.com/filelink/680c-7a1f8f6e-8f48e45b8e-2 ]
+
+## Screenshots
+
+![App Screenshot](res/help.png)
+
+## Command & Examples
+
+```bash
+telnet localhost 9999
+aos2 settings
+aos2 init
+aos2 view
+aos2 save2
+aos2 demo start
+aos2 demo play
+aos2 has @Skip
+aos2 help
+aos2 help demo
+....
+bye
+
+```
+
 
 ## Feedback
 
