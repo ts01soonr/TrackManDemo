@@ -144,10 +144,9 @@ Answer: Delete "*.jar" and rerun script "start_demo.bat|sh"
 
 Link to video recording [https://us.workplace.datto.com/filelink/680c-7a1f8f6e-8f48e45b8e-2 ]
 
-## Screenshots
-Help command:
+## Screenshots - Help Commands
 ![App Screenshot](res/help.png)
-Example of code:
+## Screenshots - Code Example
 ![App Screenshot](res/example_code.png)
 
 ## Command & Examples
